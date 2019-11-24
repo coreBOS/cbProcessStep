@@ -1,0 +1,24 @@
+{
+	"name": "coreBOS/cbProcessStep",
+	"type": "corebos-module",
+	"properties": {
+		"name": "BPM Process Flow Step Module",
+		"description": "This module is part of the BPM perspective and serves to define the validations and actions when moving from one step to the next.",
+		"keywords": ["bpm","process","flow","step"],
+		"homepage": "http://corebos.org/documentation/doku.php?id=en:extensions:extensions:cbprocessstep",
+		"version": "1.0",
+		"time": "2019-11-24",
+		"license": "Vizsage",
+		"extra": {
+			"distribution": "Free"
+		},
+		"authors": [
+					{
+					"name": "Spike Associates"
+					}
+		],
+		"support": {
+				"email": "info(at)tsolucio(dot)com"
+		}
+	}
+}
