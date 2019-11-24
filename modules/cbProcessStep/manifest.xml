@@ -23,7 +23,7 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************************
- *  Module       : ProcessStep
+ *  Module       : Process Flow Step
  *  Version      : 5.4.0
  *  Author       : AT CONSULTING
  *************************************************************************************************/
@@ -50,6 +50,15 @@
 <sql><![CDATA[CREATE TABLE `vtiger_cbprocessstepcf` (
   `cbprocessstepid` int(11) NOT NULL,
   PRIMARY KEY (`cbprocessstepid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_cbprocesssteprel</name>
+<sql><![CDATA[CREATE TABLE `vtiger_cbprocesssteprel` (
+  `stepid` int(11) NOT NULL,
+  `wfid` int(11) NOT NULL,
+  `positive` tinyint(1) NOT NULL,
+  PRIMARY KEY (`stepid`,`wfid`,`positive`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
 </table>
 </tables>
