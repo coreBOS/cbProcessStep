@@ -130,8 +130,27 @@ class cbProcessStep extends CRMEntity {
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
+			global $adb;
 			// TODO Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, 'bpmstp-', '000000001');
+			// Relation with Workflows
+			$module = Vtiger_Module::getInstance($modulename);
+			$newrelid = $adb->getUniqueID('vtiger_relatedlists');
+			$adb->query("INSERT INTO vtiger_relatedlists
+				(relation_id, tabid, related_tabid, name, sequence, label, presence, actions) VALUES
+				($newrelid, ".$module->id.", 0, 'getPositivetasks', '1', 'PostiveValidationTasks',0,'ADD,SELECT');");
+			$newrelid = $adb->getUniqueID('vtiger_relatedlists');
+			$adb->query("INSERT INTO vtiger_relatedlists
+				(relation_id, tabid, related_tabid, name, sequence, label, presence, actions) VALUES
+				($newrelid, ".$module->id.", 0, 'getNegativetasks', '2', 'NegtiveValidationTasks',0,'ADD,SELECT');");
+			$newrelid = $adb->getUniqueID('vtiger_relatedlists');
+			$adb->query("INSERT INTO vtiger_relatedlists
+				(relation_id, tabid, related_tabid, name, sequence, label, presence, actions) VALUES
+				($newrelid, ".$module->id.", ".getTabId('ProcessLog').", 'get_dependents_list', '3', 'ProcessLog',0,'ADD');");
+			require_once 'include/events/include.inc';
+			$em = new VTEventsManager($adb);
+			$em->registerHandler('corebos.relatedlist.dellink', 'modules/cbProcessStep/workflowRelatedListLinks.php', 'workflowRelatedListLinks');
+			echo "<h4>dellink filter registered.</h4>";
 		} elseif ($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 		} elseif ($event_type == 'module.enabled') {
@@ -145,12 +164,62 @@ class cbProcessStep extends CRMEntity {
 		}
 	}
 
-	public function getNegativetasks($id, $cur_tab_id, $rel_tab_id, $actions = false) {
+	public function getWorkflowRLWithSign($id, $cur_tab_id, $rel_tab_id, $actions, $positive) {
+		require_once 'modules/com_vtiger_workflow/VTWorkflow.php';
+		global $currentModule, $singlepane_view;
+		$related_module = 'com_vtiger_workflow';
+		$other = new Workflow();
+		unset($other->list_fields['Tools'], $other->list_fields_name['Tools']);
+		$button = '';
+		if ($actions) {
+			if (is_string($actions)) {
+				$actions = explode(',', strtoupper($actions));
+			}
+			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
+				$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module, $related_module).
+					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
+					"&cbcustompopupinfo=bpmsteprl&bpmsteprl=".($positive ? 'positive' : 'negative').
+					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',".
+					"'width=640,height=602,resizable=0,scrollbars=0');\" value='" . getTranslatedString('LBL_SELECT') . ' '.
+					getTranslatedString($related_module, $related_module) . "'>&nbsp;";
+			}
+			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
+				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
+				$button .= "<input type='hidden' name='createmode' value='link' />" .
+					"<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "' class='crmbutton small create'" .
+					" onclick='this.form.action.value=\"workflowlist\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
+					" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
+			}
+		}
 
+		// To make the edit or del link actions to return back to same view.
+		if ($singlepane_view == 'true') {
+			$returnset = "&return_module=$currentModule&return_action=DetailView&return_id=$id";
+		} else {
+			$returnset = "&return_module=$currentModule&return_action=CallRelatedList&return_id=$id";
+		}
+
+		$query = 'SELECT *,workflow_id as crmid ';
+		$query .= ' FROM com_vtiger_workflows';
+		$query .= ' INNER JOIN vtiger_cbprocesssteprel ON wfid = workflow_id';
+		$query .= " WHERE stepid = $id and ".($positive ? '' : '!').'positive';
+
+		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
+
+		if ($return_value == null) {
+			$return_value = array('header'=>array(),'entries'=>array(),'navigation'=>array('',''));
+		}
+		$return_value['CUSTOM_BUTTON'] = $button;
+
+		return $return_value;
+	}
+
+	public function getNegativetasks($id, $cur_tab_id, $rel_tab_id, $actions = false) {
+		return $this->getWorkflowRLWithSign($id, $cur_tab_id, $rel_tab_id, $actions, 0);
 	}
 
 	public function getPositivetasks($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-
+		return $this->getWorkflowRLWithSign($id, $cur_tab_id, $rel_tab_id, $actions, 1);
 	}
 
 	/**
@@ -158,14 +227,52 @@ class cbProcessStep extends CRMEntity {
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
+	public function save_related_module($module, $crmid, $with_module, $with_crmid) {
+		global $adb;
+		$positive = (isset($_REQUEST['bpmsteprl']) && $_REQUEST['bpmsteprl']=='positive') ? '1' : '0';
+		$with_crmid = (array)$with_crmid;
+		foreach ($with_crmid as $relcrmid) {
+			if ($with_module == 'com_vtiger_workflow') {
+				$checkpresence = $adb->pquery('SELECT 1 FROM vtiger_cbprocesssteprel WHERE stepid=? AND wfid=? AND positive=?', array($crmid, $relcrmid, $positive));
+				if ($checkpresence && $adb->num_rows($checkpresence)) {
+					continue;
+				}
+				$adb->pquery('INSERT INTO vtiger_cbprocesssteprel(stepid, wfid, positive) VALUES(?,?,?)', array($crmid, $relcrmid, $positive));
+			} else {
+				parent::save_related_module($module, $crmid, $with_module, $with_crmid);
+			}
+		}
+	}
 
 	/**
 	 * Handle deleting related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
+	public function delete_related_module($module, $crmid, $with_module, $with_crmid) {
+		global $log;
+		$log->fatal($_REQUEST);
+		global $adb;
+		$with_crmid = (array)$with_crmid;
+		$data = array();
+		$data['sourceModule'] = $module;
+		$data['sourceRecordId'] = $crmid;
+		$data['destinationModule'] = $with_module;
+		if ($with_module == 'com_vtiger_workflow') {
+			$positive = (isset($_REQUEST['bpmsteprl']) && $_REQUEST['bpmsteprl']=='positive') ? '1' : '0';
+			foreach ($with_crmid as $relcrmid) {
+				$data['destinationRecordId'] = $relcrmid;
+				cbEventHandler::do_action('corebos.entity.link.delete', $data);
+				$adb->pquery(
+					'DELETE FROM vtiger_cbprocesssteprel WHERE stepid=? AND wfid=? AND positive=?',
+					array($crmid, $relcrmid, $positive)
+				);
+				cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
+			}
+		} else {
+			parent::delete_related_module($module, $crmid, $with_module, $with_crmid);
+		}
+	}
 
 	/**
 	 * Handle getting related list information.
