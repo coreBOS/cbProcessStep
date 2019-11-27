@@ -137,16 +137,14 @@ class cbProcessStep extends CRMEntity {
 			$module = Vtiger_Module::getInstance($modulename);
 			$newrelid = $adb->getUniqueID('vtiger_relatedlists');
 			$adb->query("INSERT INTO vtiger_relatedlists
-				(relation_id, tabid, related_tabid, name, sequence, label, presence, actions) VALUES
-				($newrelid, ".$module->id.", 0, 'getPositivetasks', '1', 'PostiveValidationTasks',0,'ADD,SELECT');");
+				(relation_id, tabid, related_tabid, name, sequence, label, presence, actions,relationtype) VALUES
+				($newrelid, ".$module->id.", 0, 'getPositivetasks', '1', 'PostiveValidationTasks',0,'ADD,SELECT','N:N');");
 			$newrelid = $adb->getUniqueID('vtiger_relatedlists');
 			$adb->query("INSERT INTO vtiger_relatedlists
-				(relation_id, tabid, related_tabid, name, sequence, label, presence, actions) VALUES
-				($newrelid, ".$module->id.", 0, 'getNegativetasks', '2', 'NegtiveValidationTasks',0,'ADD,SELECT');");
-			$newrelid = $adb->getUniqueID('vtiger_relatedlists');
-			$adb->query("INSERT INTO vtiger_relatedlists
-				(relation_id, tabid, related_tabid, name, sequence, label, presence, actions) VALUES
-				($newrelid, ".$module->id.", ".getTabId('ProcessLog').", 'get_dependents_list', '3', 'ProcessLog',0,'ADD');");
+				(relation_id, tabid, related_tabid, name, sequence, label, presence, actions,relationtype) VALUES
+				($newrelid, ".$module->id.", 0, 'getNegativetasks', '2', 'NegtiveValidationTasks',0,'ADD,SELECT','N:N');");
+			$modplog = Vtiger_Module::getInstance('ProcessLog');
+			$module->setRelatedList($modplog, 'ProcessLog', array('ADD'), 'get_dependents_list');
 			require_once 'include/events/include.inc';
 			$em = new VTEventsManager($adb);
 			$em->registerHandler('corebos.relatedlist.dellink', 'modules/cbProcessStep/workflowRelatedListLinks.php', 'workflowRelatedListLinks');
