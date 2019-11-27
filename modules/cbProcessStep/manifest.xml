@@ -84,7 +84,7 @@
 <displaytype>1</displaytype>
 <info_type>BAS</info_type>
 <helpinfo><![CDATA[]]></helpinfo>
-<masseditable>0</masseditable>
+<masseditable>1</masseditable>
 <relatedmodules>
 <relatedmodule>cbProcessFlow</relatedmodule>
 </relatedmodules>
@@ -131,7 +131,7 @@
 <displaytype>1</displaytype>
 <info_type>BAS</info_type>
 <helpinfo><![CDATA[]]></helpinfo>
-<masseditable>0</masseditable>
+<masseditable>1</masseditable>
 </field>
 <field>
 <fieldname>validation</fieldname>
@@ -151,7 +151,7 @@
 <displaytype>1</displaytype>
 <info_type>BAS</info_type>
 <helpinfo><![CDATA[]]></helpinfo>
-<masseditable>0</masseditable>
+<masseditable>1</masseditable>
 <relatedmodules>
 <relatedmodule>cbMap</relatedmodule>
 </relatedmodules>
@@ -174,7 +174,7 @@
 <displaytype>1</displaytype>
 <info_type>BAS</info_type>
 <helpinfo><![CDATA[]]></helpinfo>
-<masseditable>0</masseditable>
+<masseditable>1</masseditable>
 </field>
 <field>
 <fieldname>context</fieldname>
@@ -194,7 +194,7 @@
 <displaytype>1</displaytype>
 <info_type>BAS</info_type>
 <helpinfo><![CDATA[]]></helpinfo>
-<masseditable>0</masseditable>
+<masseditable>1</masseditable>
 <relatedmodules>
 <relatedmodule>cbMap</relatedmodule>
 </relatedmodules>
@@ -217,7 +217,7 @@
 <displaytype>1</displaytype>
 <info_type>BAS</info_type>
 <helpinfo><![CDATA[]]></helpinfo>
-<masseditable>0</masseditable>
+<masseditable>1</masseditable>
 </field>
 <field>
 <fieldname>assigned_user_id</fieldname>
