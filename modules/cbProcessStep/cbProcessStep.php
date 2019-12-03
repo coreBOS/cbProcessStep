@@ -248,8 +248,6 @@ class cbProcessStep extends CRMEntity {
 	 * You can override the behavior by re-defining it here.
 	 */
 	public function delete_related_module($module, $crmid, $with_module, $with_crmid) {
-		global $log;
-		$log->fatal($_REQUEST);
 		global $adb;
 		$with_crmid = (array)$with_crmid;
 		$data = array();
