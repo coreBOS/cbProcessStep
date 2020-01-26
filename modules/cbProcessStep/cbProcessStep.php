@@ -164,7 +164,7 @@ class cbProcessStep extends CRMEntity {
 
 	public function getWorkflowRLWithSign($id, $cur_tab_id, $rel_tab_id, $actions, $positive) {
 		require_once 'modules/com_vtiger_workflow/VTWorkflow.php';
-		global $currentModule, $singlepane_view;
+		global $currentModule, $singlepane_view, $adb;
 		$related_module = 'com_vtiger_workflow';
 		$other = new Workflow();
 		unset($other->list_fields['Tools'], $other->list_fields_name['Tools']);
@@ -196,6 +196,9 @@ class cbProcessStep extends CRMEntity {
 		} else {
 			$returnset = "&return_module=$currentModule&return_action=CallRelatedList&return_id=$id";
 		}
+
+		// we have to cleanup the relations because workflow doesn't do it, so when a workflow is deleted, that ID is not deleted from the relation
+		$adb->query('delete from vtiger_cbprocesssteprel where wfid not in (select workflow_id from com_vtiger_workflows)');
 
 		$query = 'SELECT *,workflow_id as crmid ';
 		$query .= ' FROM com_vtiger_workflows';
