@@ -26,5 +26,6 @@ $mod_strings = array(
 	'active' => 'Activo',
 	'PostiveValidationTasks' => 'Tareas Validación Postiva',
 	'NegtiveValidationTasks' => 'Tareas Validación Negativa',
+	'isactivevalidation' => 'Validación Paso Activo',
 );
 ?>
