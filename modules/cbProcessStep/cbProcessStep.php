@@ -11,9 +11,6 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class cbProcessStep extends CRMEntity {
-	public $db;
-	public $log;
-
 	public $table_name = 'vtiger_cbprocessstep';
 	public $table_index= 'cbprocessstepid';
 	public $column_fields = array();
