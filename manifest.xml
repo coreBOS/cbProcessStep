@@ -42,6 +42,7 @@
   `validation` int(11) DEFAULT NULL,
   `context` int(11) DEFAULT NULL,
   `isactivevalidation` int(11) DEFAULT NULL,
+  `showstepvalidation` int(11) DEFAULT NULL,
   PRIMARY KEY (`cbprocessstepid`),
   INDEX(`processflow`,`fromstep`,`tostep`,`active`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
@@ -244,6 +245,29 @@
 </relatedmodules>
 </field>
 <field>
+<fieldname>showstepvalidation</fieldname>
+<uitype>10</uitype>
+<columnname>showstepvalidation</columnname>
+<tablename>vtiger_cbprocessstep</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>showstepvalidation</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>9</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<relatedmodules>
+<relatedmodule>cbMap</relatedmodule>
+</relatedmodules>
+</field>
+<field>
 <fieldname>assigned_user_id</fieldname>
 <uitype>53</uitype>
 <columnname>smownerid</columnname>
@@ -253,7 +277,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>9</sequence>
+<sequence>10</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~M</typeofdata>
 <quickcreate>1</quickcreate>
@@ -273,7 +297,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>10</sequence>
+<sequence>11</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
 <quickcreate>3</quickcreate>
@@ -293,7 +317,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>11</sequence>
+<sequence>12</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>DT~O</typeofdata>
 <quickcreate>3</quickcreate>
@@ -313,7 +337,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>12</sequence>
+<sequence>13</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>DT~O</typeofdata>
 <quickcreate>3</quickcreate>
