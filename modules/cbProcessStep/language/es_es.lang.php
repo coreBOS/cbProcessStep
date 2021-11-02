@@ -28,5 +28,7 @@ $mod_strings = array(
 	'NegtiveValidationTasks' => 'Tareas Validación Negativa',
 	'isactivevalidation' => 'Validación Paso Activo',
 	'showstepvalidation' => 'Validación Mostrar Paso',
+	'Default Path' => 'Camino por Defecto',
+	'Valid Default Start' => 'Inicio Válido Camino Defecto',
 );
 ?>

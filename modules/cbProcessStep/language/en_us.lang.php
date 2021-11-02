@@ -28,5 +28,7 @@ $mod_strings = array(
 	'NegtiveValidationTasks' => 'Negtive Validation Tasks',
 	'isactivevalidation' => 'Is Active Validation',
 	'showstepvalidation' => 'Show step validation',
+	'Default Path' => 'Default Path',
+	'Valid Default Start' => 'Valid Default Start',
 );
 ?>
