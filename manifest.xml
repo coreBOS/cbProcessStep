@@ -43,6 +43,8 @@
   `context` int(11) DEFAULT NULL,
   `isactivevalidation` int(11) DEFAULT NULL,
   `showstepvalidation` int(11) DEFAULT NULL,
+  `defaultpath` varchar(3) DEFAULT NULL,
+  `validdefaultstart` varchar(3) DEFAULT NULL,
   PRIMARY KEY (`cbprocessstepid`),
   INDEX(`processflow`,`fromstep`,`tostep`,`active`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
