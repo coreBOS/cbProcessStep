@@ -33,5 +33,6 @@ $mod_strings = array(
 	'Button Label' => 'Button Label',
 	'New User/Group ID Map' => 'New User/Group ID Map',
 	'Assign User/Group After' => 'Assign User/Group After',
+	'moreinfomapid' => 'More Information',
 );
 ?>
