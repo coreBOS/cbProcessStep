@@ -145,6 +145,7 @@ class cbProcessStep extends CRMEntity {
 			require_once 'include/events/include.inc';
 			$em = new VTEventsManager($adb);
 			$em->registerHandler('corebos.relatedlist.dellink', 'modules/cbProcessStep/workflowRelatedListLinks.php', 'workflowRelatedListLinks');
+			self::addWorkFlowCaseFields();
 			echo "<h4>dellink filter registered.</h4>";
 		} elseif ($event_type == 'module.disabled') {
 			// Handle actions when this module is disabled.
@@ -156,6 +157,42 @@ class cbProcessStep extends CRMEntity {
 			// Handle actions before this module is updated.
 		} elseif ($event_type == 'module.postupdate') {
 			// Handle actions after this module is updated.
+		}
+	}
+
+	public static function addWorkFlowCaseFields() {
+		global $adb;
+		$workflow_name = 'Fill Case From and Case To fields on cbProcessStep';
+		$result = $adb->pquery('select 1 from com_vtiger_workflows where summary=?', [$workflow_name]);
+
+		if ($result && $adb->num_rows($result) == 0) {
+			require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
+			require_once 'modules/com_vtiger_workflow/VTWorkflowManager.inc';
+
+			$workflowManager = new VTWorkflowManager($adb);
+			$taskManager = new VTTaskManager($adb);
+
+			$workflow = $workflowManager->newWorkFlow('cbProcessStep');
+			$workflow->description = $workflow_name;
+			$workflow->executionCondition = VTWorkflowManager::$ON_EVERY_SAVE;
+			$workflow->defaultworkflow = 1;
+			$workflowManager->save($workflow);
+
+			$task = $taskManager->createTask('VTUpdateFieldsTask', $workflow->id);
+			$task->active = 1;
+			$task->summary = $workflow_name;
+			$task->field_value_mapping = array(
+				'casefrom' => array(
+					'fieldname' => 'casefrom',
+					'valuetype' => 'expression',
+					'value' => "stringreplace(' ', '' ,uppercasewords(translate(casefrom, 'en')))'",
+				),
+				'caseto' => array(
+					'fieldname' => 'caseto',
+					'valuetype' => 'expression',
+					'value' => "stringreplace(' ', '' ,uppercasewords(translate(caseto, 'en')))'",
+				),
+			);
 		}
 	}
 

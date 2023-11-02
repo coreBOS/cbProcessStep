@@ -34,5 +34,7 @@ $mod_strings = array(
 	'New User/Group ID Map' => 'New User/Group ID Map',
 	'Assign User/Group After' => 'Assign User/Group After',
 	'moreinfomapid' => 'More Information',
+	'casefrom' => 'From Step Encoded',
+	'caseto' => 'To Step Encoded',
 );
 ?>

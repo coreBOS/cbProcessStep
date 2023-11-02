@@ -48,6 +48,8 @@
   `buttonlabel` varchar(153) DEFAULT NULL,
   `usermap` int(11) DEFAULT NULL,
   `assignuserafter` varchar(3) DEFAULT NULL,
+  `casefrom` varchar(155) DEFAULT NULL,
+  `caseto` varchar(155) DEFAULT NULL,
   PRIMARY KEY (`cbprocessstepid`),
   INDEX(`processflow`,`fromstep`,`tostep`,`active`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
@@ -396,6 +398,46 @@
 <masseditable>1</masseditable>
 </field>
 <field>
+  <fieldname>casefrom</fieldname>
+  <uitype>1</uitype>
+  <columnname>casefrom</columnname>
+  <tablename>vtiger_cbprocessstep</tablename>
+  <generatedtype>1</generatedtype>
+  <fieldlabel>casefrom</fieldlabel>
+  <readonly>1</readonly>
+  <presence>0</presence>
+  <defaultvalue></defaultvalue>
+  <sequence>16</sequence>
+  <maximumlength>100</maximumlength>
+  <typeofdata>V~O</typeofdata>
+  <quickcreate>0</quickcreate>
+  <quickcreatesequence></quickcreatesequence>
+  <displaytype>4</displaytype>
+  <info_type>BAS</info_type>
+  <helpinfo><![CDATA[]]></helpinfo>
+  <masseditable>1</masseditable>
+</field>
+<field>
+  <fieldname>caseto</fieldname>
+  <uitype>1</uitype>
+  <columnname>caseto</columnname>
+  <tablename>vtiger_cbprocessstep</tablename>
+  <generatedtype>1</generatedtype>
+  <fieldlabel>caseto</fieldlabel>
+  <readonly>1</readonly>
+  <presence>0</presence>
+  <defaultvalue></defaultvalue>
+  <sequence>17</sequence>
+  <maximumlength>100</maximumlength>
+  <typeofdata>V~O</typeofdata>
+  <quickcreate>0</quickcreate>
+  <quickcreatesequence></quickcreatesequence>
+  <displaytype>4</displaytype>
+  <info_type>BAS</info_type>
+  <helpinfo><![CDATA[]]></helpinfo>
+  <masseditable>1</masseditable>
+</field>
+<field>
 <fieldname>created_user_id</fieldname>
 <uitype>52</uitype>
 <columnname>smcreatorid</columnname>
@@ -405,7 +447,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>16</sequence>
+<sequence>18</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
 <quickcreate>3</quickcreate>
@@ -425,7 +467,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>17</sequence>
+<sequence>19</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>DT~O</typeofdata>
 <quickcreate>3</quickcreate>
@@ -445,7 +487,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>18</sequence>
+<sequence>20</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>DT~O</typeofdata>
 <quickcreate>3</quickcreate>

@@ -1,0 +1,9 @@
+<updatesChangeLog>
+	<changeSet>
+		<author>arlindismalaja</author>
+		<description>Fill Case From and Case To fields on cbProcessStep</description>
+		<filename>modules/cbProcessStep/changesets/add_workflow_insertFieldscbProcessStep.php</filename>
+		<classname>add_workflow_insertFieldscbProcessStep</classname>
+		<systemupdate>true</systemupdate>
+	</changeSet>
+</updatesChangeLog>
