@@ -193,6 +193,7 @@ class cbProcessStep extends CRMEntity {
 					'value' => "stringreplace(' ', '' ,uppercasewords(translate(caseto, 'en')))'",
 				),
 			);
+			$taskManager->saveTask($task);
 		}
 	}
 
