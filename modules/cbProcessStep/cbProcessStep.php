@@ -181,17 +181,19 @@ class cbProcessStep extends CRMEntity {
 			$task = $taskManager->createTask('VTUpdateFieldsTask', $workflow->id);
 			$task->active = 1;
 			$task->summary = $workflow_name;
-			$task->field_value_mapping = array(
-				'casefrom' => array(
-					'fieldname' => 'casefrom',
-					'valuetype' => 'expression',
-					'value' => "stringreplace(' ', '' ,uppercasewords(translate(casefrom, 'en')))'",
-				),
-				'caseto' => array(
-					'fieldname' => 'caseto',
-					'valuetype' => 'expression',
-					'value' => "stringreplace(' ', '' ,uppercasewords(translate(caseto, 'en')))'",
-				),
+			$task->field_value_mapping = json_encode(
+				array(
+					'casefrom' => array(
+						'fieldname' => 'casefrom',
+						'valuetype' => 'expression',
+						'value' => "stringreplace(' ', '' ,uppercasewords(translate(fromstep, 'en')))'",
+					),
+					'caseto' => array(
+						'fieldname' => 'caseto',
+						'valuetype' => 'expression',
+						'value' => "stringreplace(' ', '' ,uppercasewords(translate(tostep, 'en')))'",
+					),
+				)
 			);
 			$taskManager->saveTask($task);
 		}
