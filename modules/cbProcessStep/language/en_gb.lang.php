@@ -36,5 +36,6 @@ $mod_strings = array(
 	'moreinfomapid' => 'More Information',
 	'casefrom' => 'From Step Encoded',
 	'caseto' => 'To Step Encoded',
+	'LBL_STEP_VALIDATION' => 'At least one of the step values is incorrect'
 );
 ?>

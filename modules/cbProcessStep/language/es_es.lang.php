@@ -36,5 +36,6 @@ $mod_strings = array(
 	'moreinfomapid' => 'Más Información',
 	'casefrom' => 'De Paso Codificado',
 	'caseto' => 'A Paso Codificado',
+	'LBL_STEP_VALIDATION' => 'Al menos uno de los valores de paso es incorrecto'
 );
 ?>
