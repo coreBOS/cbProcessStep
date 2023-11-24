@@ -18,5 +18,6 @@ $mod_strings = array(
 	'LBL_DESCRIPTION_INFORMATION' => 'Beschreibung',
 
 	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'LBL_STEP_VALIDATION' => 'Mindestens einer der Schrittwerte ist falsch'
 );
 ?>

@@ -309,5 +309,25 @@ class cbProcessStep extends CRMEntity {
 			parent::delete_related_module($module, $crmid, $with_module, $with_crmid);
 		}
 	}
+
+	public function preSaveCheck($request) {
+		global $adb;
+		$result = $adb->pquery('select pffield,pfmodule from vtiger_cbprocessflow where cbprocessflowid = ?', array($this->column_fields['processflow']));
+		if ($result && $adb->num_rows($result)>0) {
+			$pffield = $adb->query_result($result, 0, 'pffield');
+			$pfmodule = $adb->query_result($result, 0, 'pfmodule');
+		}
+		if ($this->mode == 'edit' && isset($request['fldName']) && ($request['fldName'] == 'fromstep' || $request['fldName'] == 'tostep')) {
+			if (valueExistsInPicklist(urldecode($request['fieldValue']), $pffield, $pfmodule) == false) {
+				return array(true, getTranslatedString('LBL_STEP_VALIDATION', 'cbProcessStep'), '', '');
+			}
+		} elseif (array_key_exists('fromstep', $request) && array_key_exists('tostep', $request)) {
+			if (valueExistsInPicklist($request['fromstep'], $pffield, $pfmodule) == false || valueExistsInPicklist($request['tostep'], $pffield, $pfmodule) == false) {
+				return array(true, getTranslatedString('LBL_STEP_VALIDATION', 'cbProcessStep'), '', '');
+			}
+		}
+		return parent::preSaveCheck($request);
+	}
+
 }
 ?>

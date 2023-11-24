@@ -18,5 +18,6 @@ $mod_strings = array(
 	'LBL_DESCRIPTION_INFORMATION' => 'Description',
 
 	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'LBL_STEP_VALIDATION' => 'Cel puțin una dintre valorile pasului este incorectă'
 );
 ?>

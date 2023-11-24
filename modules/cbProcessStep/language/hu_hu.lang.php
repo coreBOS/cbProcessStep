@@ -18,5 +18,6 @@ $mod_strings = array(
 	'LBL_DESCRIPTION_INFORMATION' => 'Description',
 
 	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'LBL_STEP_VALIDATION' => 'A lépésértékek közül legalább egy helytelen'
 );
 ?>
