@@ -312,8 +312,7 @@ class cbProcessStep extends CRMEntity {
 
 	public function preSaveCheck($request) {
 		global $adb;
-		$processflowId = $this->column_fields['processflow'];
-		$result = $adb->query("select pffield,pfmodule from vtiger_cbprocessflow where cbprocessflowid = $processflowId");
+		$result = $adb->pquery('select pffield,pfmodule from vtiger_cbprocessflow where cbprocessflowid = ?', array($this->column_fields['processflow']));
 		if ($result && $adb->num_rows($result)>0) {
 			$pffield = $adb->query_result($result, 0, 'pffield');
 			$pfmodule = $adb->query_result($result, 0, 'pfmodule');
