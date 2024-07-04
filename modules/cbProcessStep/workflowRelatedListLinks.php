@@ -21,11 +21,12 @@ class workflowRelatedListLinks extends VTEventHandler {
 
 	public function handleFilter($handlerType, $parameter) {
 		if ($handlerType=='corebos.relatedlist.dellink' && $parameter[0]=='com_vtiger_workflow') {
+			$requestRecord = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';
 			if ($_REQUEST['header']=='PostiveValidationTasks') {
-				$parameter[2] .= '&bpmsteprl=positive';
+				$parameter[2] = 'index.php?module='.$parameter[3].'&action=updateRelations&parentid='.$requestRecord.'&destination_module='.$parameter[0].'&idlist='.$parameter[1].'&mode=delete&bpmsteprl=positive';
 			}
 			if ($_REQUEST['header']=='NegtiveValidationTasks') {
-				$parameter[2] .= '&bpmsteprl=negative';
+				$parameter[2] = 'index.php?module='.$parameter[3].'&action=updateRelations&parentid='.$requestRecord.'&destination_module='.$parameter[0].'&idlist='.$parameter[1].'&mode=delete&bpmsteprl=negative';
 			}
 		}
 		return $parameter;
